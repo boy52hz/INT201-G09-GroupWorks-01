@@ -1,22 +1,38 @@
 import { products } from './products.js';
 
-document.addEventListener('DOMContentLoaded', function () {
-    const productListElement = document.getElementById('products')
-    const cartCount = document.getElementById('cart-count')
-    products.forEach((product, index) => {
+const btnToggleSearch = document.getElementById('toggleSearch');
+const cartCount = document.getElementById('cart-count')
+const removeCartBtn = document.getElementById('remove-cart')
+const area = document.getElementById('search-area')
+let isOpen = !area.getAttribute('data-isOpen')
+
+const updateArea = () => {
+    if (isOpen) {
+        area.setAttribute('class', 'slide-out-bck-center')
+    } else {
+        area.setAttribute('class', 'slide-in-fwd-center')
+    }
+}
+
+const showProducts = products => {
+    const searchResult = document.getElementById('search-result')
+    searchResult.textContent = (
+        products.length > 0 ? `Found ${products.length} item(s).` : 'Not found.'
+    )
+    
+    const productsElem = document.getElementById('products')
+    productsElem.innerHTML = null
+    
+    products.forEach(product => {
         const titleEle = document.createElement('h4')
         titleEle.style.textAlign = 'center'
         titleEle.textContent = product.name
-
-        
 
     //-------------------------------------------------------------------------    
 
         const imgEle = document.createElement('img');
         imgEle.setAttribute('src', `./productPicture/${ product.id.toLowerCase() }.jpeg`);
         imgEle.setAttribute('class','card-img-top')
-        // imgEle.setAttribute('height', 300);
-        // imgEle.setAttribute('width', 250);
 
     //--------------------------------------------------------------------------
 
@@ -39,31 +55,57 @@ document.addEventListener('DOMContentLoaded', function () {
         qtyInStockEle.textContent = `Stock: ${product.qtyInStock}`
 
     //-----------------------------------------------------------------------------
- 
+    
     
         const cardElem = document.createElement('div')
-        cardElem.classList.add('card', 'w-25')
+        cardElem.setAttribute('class', 'card w-25 d-inline-block m-3')
 
         const cardBodyElem = document.createElement('div')
-        cardBodyElem.classList.add('card-body')
+        cardBodyElem.setAttribute('class', 'card-body')
     
     //-----------------------------------------------------------------------------
 
         const addCartBtn = document.createElement('button')
-        addCartBtn.classList.add('btn', 'btn-outline-dark', 'm-3', 'mx-auto')
+        addCartBtn.setAttribute('class', 'btn btn-outline-dark m-3')
         addCartBtn.textContent = 'Add to cart'
-        addCartBtn.onclick = ev => {
+        addCartBtn.addEventListener('click', () => {
             cartCount.textContent = Number(cartCount.textContent) + 1
-        }
+        })
 
-        cardBodyElem.appendChild(titleEle)
-        cardBodyElem.appendChild(imgEle)
-        cardBodyElem.appendChild(idEle)
-        cardBodyElem.appendChild(typeEle)
-        cardBodyElem.appendChild(priceEle)
-        cardBodyElem.appendChild(qtyInStockEle)
-        cardBodyElem.appendChild(addCartBtn)
+    //-----------------------------------------------------------------------------
+
+        cardBodyElem.append(titleEle, imgEle, idEle, typeEle, priceEle, qtyInStockEle, addCartBtn)
         cardElem.appendChild(cardBodyElem)
-        productListElement.appendChild(cardElem)
+        productsElem.appendChild(cardElem)
     })
-}, false);
+}
+
+window.addEventListener('DOMContentLoaded', event => {
+    updateArea()
+    showProducts(products)
+})
+
+btnToggleSearch.addEventListener('click', event => {
+    event.preventDefault()
+    isOpen = !isOpen
+    btnToggleSearch.setAttribute('data-isOpen', isOpen)
+    updateArea()
+})
+
+removeCartBtn.addEventListener('click', event => {
+    event.preventDefault()
+    let count = Number(cartCount.textContent)
+    if ((count - 1) >= 0) {
+        cartCount.textContent = count - 1
+    }
+})
+    
+const searchBar = document.getElementById('search-bar')
+searchBar.addEventListener('keyup', () => {
+    const keyword = searchBar.value.trim().toLowerCase()
+    const filteredProducts = products.filter(product => 
+        product.id.toLowerCase().includes(keyword) ||
+        product.name.toLowerCase().includes(keyword)
+    )
+    showProducts(filteredProducts)
+})
