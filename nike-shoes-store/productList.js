@@ -1,7 +1,9 @@
 import { products } from './products.js';
+import { cartEvents } from './cart.js';
 
 const btnToggleSearch = document.getElementById('toggleSearch');
 const cartCount = document.getElementById('cart-count')
+
 const removeCartBtn = document.getElementById('remove-cart')
 const area = document.getElementById('search-area')
 let isOpen = !area.getAttribute('data-isOpen')
@@ -68,8 +70,13 @@ const showProducts = products => {
         const addCartBtn = document.createElement('button')
         addCartBtn.setAttribute('class', 'btn btn-outline-dark m-3')
         addCartBtn.textContent = 'Add to cart'
+        
+        
+        
+        //เพิ่ม : ให้กด add to cartจะเพิ่ม id ชื่อ ราคา จำนวนของสินค้าแต่ละชนิดที่กด add และแสดงเลขที่รูปตะกร้าทีละ1  
         addCartBtn.addEventListener('click', () => {
-            cartCount.textContent = Number(cartCount.textContent) + 1
+            cartEvents.add(product);
+            cartCount.textContent = cartEvents.getAmount()            //*
         })
 
     //-----------------------------------------------------------------------------
@@ -83,6 +90,14 @@ const showProducts = products => {
 window.addEventListener('DOMContentLoaded', event => {
     updateArea()
     showProducts(products)
+    if(+localStorage.getItem('darkModeStatus') === 1){
+        box.checked = true
+    }else{
+        box.checked = false
+    }
+    updateTheme()
+    cartEvents.update()                                         //*
+    cartCount.textContent = cartEvents.getAmount()              //*
 })
 
 btnToggleSearch.addEventListener('click', event => {
@@ -92,12 +107,13 @@ btnToggleSearch.addEventListener('click', event => {
     updateArea()
 })
 
+//แก้ : เมื่อกดปุ่มถังขยะ จะทำการลบสินค้าในตะกร้าทั้งหมด
 removeCartBtn.addEventListener('click', event => {
     event.preventDefault()
-    let count = Number(cartCount.textContent)
-    if ((count - 1) >= 0) {
-        cartCount.textContent = count - 1
-    }
+
+    cartEvents.productAdded = []                                                    //*
+    localStorage.setItem('cart', JSON.stringify(cartEvents.productAdded));          //*
+    cartCount.textContent = cartEvents.getAmount()                                  //*
 })
     
 const searchBar = document.getElementById('search-bar')
@@ -109,3 +125,42 @@ searchBar.addEventListener('keyup', () => {
     )
     showProducts(filteredProducts)
 })
+
+// const themeSwitch = document.getElementById('box');
+// themeSwitch.addEventListener('change', () => {
+//     document.body.classList.toggle('bg-dark');
+// });
+
+const box = document.getElementById('box');
+box.addEventListener('click', () => {
+    if(+localStorage.getItem('darkModeStatus') === 1){          //*
+        localStorage.setItem('darkModeStatus', 0)               //*
+    }else{                                                      //*
+        localStorage.setItem('darkModeStatus', 1)               //*
+    }                                                           //*
+    updateTheme()                                               //*
+});
+
+function updateTheme(){
+    box.checked?document.body.classList.add("bg-dark"):document.body.classList.remove("bg-dark")        //*
+}
+
+// window.addEventListener('load', (event) => {
+//     let status = localStorage.getItem('darkModeStatus');
+//             status = JSON.parse(status);
+//   if (status === "false"){
+//     console.log("hello");
+//     document.body.classList.add("bg-dark"); 
+//     document.getElementById('box').checked = false;
+//   }
+// });
+
+
+
+
+
+
+
+
+
+
