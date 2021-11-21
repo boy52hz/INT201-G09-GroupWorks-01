@@ -1,5 +1,3 @@
-const cartCount = document.getElementById('cart-count')
-
 export const cartEvents = {
     productAdded: [],
     add: function (product) {
@@ -36,6 +34,7 @@ export const cartEvents = {
     }
 
     ,updateAmount: function () {
+        const cartCount = document.getElementById('cart-count')
         let amount = 0
         cartEvents.productAdded.forEach(product => {
             amount += product.qty

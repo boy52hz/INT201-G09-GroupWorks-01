@@ -39,6 +39,8 @@ export const showProducts = products => {
         qtyInStockEle.textContent = `Stock: ${product.qtyInStock}`
     
         const cardElem = document.createElement('div')
+        cardElem.setAttribute('id', product.id)             //*
+        cardElem.setAttribute('name', product.name)         //*
         cardElem.setAttribute('class', 'card w-25 d-inline-block m-3')
 
         const cardBodyElem = document.createElement('div')
@@ -78,14 +80,29 @@ searchBtn.addEventListener('click', event => {
     updateSearchBar()
 })
 
-searchBarInput.addEventListener('keyup', () => {
+searchBarInput.addEventListener('keyup', () => {                        //*
     const keyword = searchBarInput.value.trim().toLowerCase()
-    const filteredProducts = products.filter(product => 
-        product.id.toLowerCase().includes(keyword) ||
-        product.name.toLowerCase().includes(keyword)
-    )
-    showProducts(filteredProducts)
+    products.forEach(product => {
+        const productsElem = document.getElementById(product.id)
+        if(productsElem.getAttribute('id').toLowerCase().includes(keyword) || productsElem.getAttribute('name').toLowerCase().includes(keyword)) {
+            productsElem.setAttribute('class', 'card w-25 d-inline-block m-3')
+        }else{
+            productsElem.setAttribute('class', 'd-none')
+        }
+    })
 })
+
+// export const showProducts = products => {
+//     products.forEach(product => {
+//         if(product.id.toLowerCase().includes(keyword) || product.name.toLowerCase().includes(keyword)) {
+//             document.getElementById('cardElem').style.display = 'none';
+//         }else{
+//             document.getElementById('cardElem').style.display = 'none';
+//         }
+//     }
+// }
+
+
 
 removeCartBtn.addEventListener('click', event => {
     cartEvents.remove()
