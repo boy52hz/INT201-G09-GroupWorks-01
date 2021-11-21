@@ -84,25 +84,14 @@ searchBarInput.addEventListener('keyup', () => {                        //*
     const keyword = searchBarInput.value.trim().toLowerCase()
     products.forEach(product => {
         const productsElem = document.getElementById(product.id)
-        if(productsElem.getAttribute('id').toLowerCase().includes(keyword) || productsElem.getAttribute('name').toLowerCase().includes(keyword)) {
+        if (productsElem.getAttribute('id').toLowerCase().includes(keyword) || 
+                productsElem.getAttribute('name').toLowerCase().includes(keyword)) {
             productsElem.setAttribute('class', 'card w-25 d-inline-block m-3')
-        }else{
+        } else{
             productsElem.setAttribute('class', 'd-none')
         }
     })
 })
-
-// export const showProducts = products => {
-//     products.forEach(product => {
-//         if(product.id.toLowerCase().includes(keyword) || product.name.toLowerCase().includes(keyword)) {
-//             document.getElementById('cardElem').style.display = 'none';
-//         }else{
-//             document.getElementById('cardElem').style.display = 'none';
-//         }
-//     }
-// }
-
-
 
 removeCartBtn.addEventListener('click', event => {
     cartEvents.remove()

@@ -1,7 +1,7 @@
 const themeBtn = document.getElementById('box');
 
 const updateTheme = () => { 
-    themeBtn.checked?document.body.classList.add("bg-dark"):document.body.classList.remove("bg-dark")        //*
+    themeBtn.checked ? document.body.classList.add("bg-dark") : document.body.classList.remove("bg-dark")        //*
 }
 
 themeBtn.addEventListener('click', () => {
