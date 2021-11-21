@@ -1,5 +1,5 @@
 import { products } from './products.js';
-import { cartEvents } from './cart.js';
+import { cartEvents } from './cartEvents.js';
 
 const btnToggleSearch = document.getElementById('toggleSearch');
 const cartCount = document.getElementById('cart-count')
@@ -33,7 +33,7 @@ const showProducts = products => {
     //-------------------------------------------------------------------------    
 
         const imgEle = document.createElement('img');
-        imgEle.setAttribute('src', `./productPicture/${ product.id.toLowerCase() }.jpeg`);
+        imgEle.setAttribute('src', `./img/products/${ product.id.toLowerCase() }.jpeg`);
         imgEle.setAttribute('class','card-img-top')
 
     //--------------------------------------------------------------------------
