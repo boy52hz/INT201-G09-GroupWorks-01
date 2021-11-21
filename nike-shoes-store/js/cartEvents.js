@@ -1,3 +1,5 @@
+const cartCount = document.getElementById('cart-count')
+
 export const cartEvents = {
     productAdded: [],
     add: function (product) {
@@ -13,9 +15,16 @@ export const cartEvents = {
             }
         }
         localStorage.setItem('cart', JSON.stringify(cartEvents.productAdded));
+        cartEvents.updateAmount()
     }
 
-    ,update: function () {
+    ,remove: function () {
+        cartEvents.productAdded = []
+        localStorage.setItem('cart', JSON.stringify(cartEvents.productAdded));
+        cartEvents.updateAmount()
+    }
+
+    ,load: function () {
         cartEvents.productAdded = localStorage.getItem('cart');
         if (cartEvents.productAdded == undefined || cartEvents.productAdded.length === 0) {
             cartEvents.productAdded = [];
@@ -23,14 +32,14 @@ export const cartEvents = {
             cartEvents.productAdded = JSON.parse(cartEvents.productAdded);
         }
         localStorage.setItem('cart', JSON.stringify(cartEvents.productAdded));
+        cartEvents.updateAmount()
     }
 
-    ,getAmount: function () {
+    ,updateAmount: function () {
         let amount = 0
         cartEvents.productAdded.forEach(product => {
             amount += product.qty
         })
-        return amount
+        cartCount.textContent = amount
     }
 }
-

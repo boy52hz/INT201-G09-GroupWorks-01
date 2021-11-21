@@ -1,10 +1,11 @@
 import { showProducts } from "./productList";
+import { products } from './data/products.js';
 
 const btnToggleSearch = document.getElementById('toggleSearch');
 const area = document.getElementById('search-area')
 let isOpen = !area.getAttribute('data-isOpen')
 
-const updateArea = () => {
+export const updateArea = () => {
     if (isOpen) {
         area.setAttribute('class', 'slide-out-bck-center')
     } else {
@@ -20,3 +21,10 @@ searchBar.addEventListener('keyup', () => {
     )
     showProducts(filteredProducts)
 }) 
+
+btnToggleSearch.addEventListener('click', event => {
+    event.preventDefault()
+    isOpen = !isOpen
+    btnToggleSearch.setAttribute('data-isOpen', isOpen)
+    updateArea()
+})

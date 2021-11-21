@@ -1,8 +1,10 @@
-const box = document.getElementById('box');
+const themeBtn = document.getElementById('box');
+
 const updateTheme = () => { 
-    box.checked?document.body.classList.add("bg-dark"):document.body.classList.remove("bg-dark")        //*
+    themeBtn.checked?document.body.classList.add("bg-dark"):document.body.classList.remove("bg-dark")        //*
 }
-box.addEventListener('click', () => {
+
+themeBtn.addEventListener('click', () => {
     if(+localStorage.getItem('darkModeStatus') === 1){          //*
         localStorage.setItem('darkModeStatus', 0)               //*
     }else{                                                      //*
@@ -13,9 +15,9 @@ box.addEventListener('click', () => {
 
 window.addEventListener('DOMContentLoaded', event => {
     if(+localStorage.getItem('darkModeStatus') === 1){
-        box.checked = true
+        themeBtn.checked = true
     }else{
-        box.checked = false
+        themeBtn.checked = false
     }
     updateTheme()
 })

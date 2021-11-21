@@ -1,9 +1,9 @@
 import CookieUtil from './classes/CookieUtil.js';
 // username use cookie
-const logginbtn = document.getElementById('toggleLogin');
-const textusername = document.getElementById('usernametext');
+const logInBtn = document.getElementById('toggleLogin');
+const textUsername = document.getElementById('usernametext');
 
-logginbtn.addEventListener('click', event => {
+logInBtn.addEventListener('click', event => {
     const person = prompt("Please enter your Username:");  //*
     
     // when user cancel prompt
@@ -18,13 +18,13 @@ logginbtn.addEventListener('click', event => {
     }
     
     CookieUtil.set("username", `${userinput}`);
-    textusername.textContent = userinput;
+    textUsername.textContent = userinput;
 })
 
 document.addEventListener('DOMContentLoaded', function() {
     if(CookieUtil.get("username") === null){
-        textusername.textContent = "guest";
+        textUsername.textContent = "guest";
     } else {
-        textusername.textContent = CookieUtil.get("username");
+        textUsername.textContent = CookieUtil.get("username");
     }
  }, false);

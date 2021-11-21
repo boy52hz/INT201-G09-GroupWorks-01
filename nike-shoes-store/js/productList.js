@@ -1,22 +1,14 @@
 import { products } from './data/products.js';
 import { cartEvents } from './cartEvents.js';
 
-const btnToggleSearch = document.getElementById('toggleSearch');
-const cartCount = document.getElementById('cart-count')
+const searchBtn = document.getElementById('toggleSearch');
+const searchBar = document.getElementById('search-area')
+const searchBarInput = document.getElementById('search-bar')
+let isOpen = !searchBar.getAttribute('data-isOpen')
 
 const removeCartBtn = document.getElementById('remove-cart')
-const area = document.getElementById('search-area')
-let isOpen = !area.getAttribute('data-isOpen')
 
-const updateArea = () => {
-    if (isOpen) {
-        area.setAttribute('class', 'slide-out-bck-center')
-    } else {
-        area.setAttribute('class', 'slide-in-fwd-center')
-    }
-}
-
-const showProducts = products => {
+export const showProducts = products => {
     const searchResult = document.getElementById('search-result')
     searchResult.textContent = (
         products.length > 0 ? `Found ${products.length} item(s).` : 'Not found.'
@@ -30,56 +22,35 @@ const showProducts = products => {
         titleEle.style.textAlign = 'center'
         titleEle.textContent = product.name
 
-    //-------------------------------------------------------------------------    
-
         const imgEle = document.createElement('img');
         imgEle.setAttribute('src', `./img/products/${ product.id.toLowerCase() }.jpeg`);
         imgEle.setAttribute('class','card-img-top')
 
-    //--------------------------------------------------------------------------
-
         const idEle = document.createElement('div')
         idEle.textContent = `ID: ${product.id}`
-
-    //-------------------------------------------------------------------------
 
         const typeEle = document.createElement('div')
         typeEle.textContent = `Type: ${product.type}`
 
-    //---------------------------------------------------------------------------
-
         const priceEle = document.createElement('div')
         priceEle.textContent = `Price: ${product.price}`
 
-    //-----------------------------------------------------------------------------
-
         const qtyInStockEle = document.createElement('div')
         qtyInStockEle.textContent = `Stock: ${product.qtyInStock}`
-
-    //-----------------------------------------------------------------------------
-    
     
         const cardElem = document.createElement('div')
         cardElem.setAttribute('class', 'card w-25 d-inline-block m-3')
 
         const cardBodyElem = document.createElement('div')
         cardBodyElem.setAttribute('class', 'card-body')
-    
-    //-----------------------------------------------------------------------------
 
         const addCartBtn = document.createElement('button')
         addCartBtn.setAttribute('class', 'btn btn-outline-dark m-3')
         addCartBtn.textContent = 'Add to cart'
         
-        
-        
-        //เพิ่ม : ให้กด add to cartจะเพิ่ม id ชื่อ ราคา จำนวนของสินค้าแต่ละชนิดที่กด add และแสดงเลขที่รูปตะกร้าทีละ1  
         addCartBtn.addEventListener('click', () => {
             cartEvents.add(product);
-            cartCount.textContent = cartEvents.getAmount()            //*
         })
-
-    //-----------------------------------------------------------------------------
 
         cardBodyElem.append(titleEle, imgEle, idEle, typeEle, priceEle, qtyInStockEle, addCartBtn)
         cardElem.appendChild(cardBodyElem)
@@ -88,34 +59,34 @@ const showProducts = products => {
 }
 
 window.addEventListener('DOMContentLoaded', event => {
-    updateArea()
     showProducts(products)
-    cartEvents.update()                                         //*
-    cartCount.textContent = cartEvents.getAmount()              //*
+    cartEvents.load()
 })
 
-btnToggleSearch.addEventListener('click', event => {
+const updateSearchBar = () => {
+    if (isOpen) {
+        searchBar.setAttribute('class', 'slide-out-bck-center')
+    } else {
+        searchBar.setAttribute('class', 'slide-in-fwd-center')
+    }
+}
+
+searchBtn.addEventListener('click', event => {
     event.preventDefault()
     isOpen = !isOpen
-    btnToggleSearch.setAttribute('data-isOpen', isOpen)
-    updateArea()
+    searchBtn.setAttribute('data-isOpen', isOpen)
+    updateSearchBar()
 })
 
-//แก้ : เมื่อกดปุ่มถังขยะ จะทำการลบสินค้าในตะกร้าทั้งหมด
-removeCartBtn.addEventListener('click', event => {
-    event.preventDefault()
-
-    cartEvents.productAdded = []                                                    //*
-    localStorage.setItem('cart', JSON.stringify(cartEvents.productAdded));          //*
-    cartCount.textContent = cartEvents.getAmount()                                  //*
-})
-    
-const searchBar = document.getElementById('search-bar')
-searchBar.addEventListener('keyup', () => {
-    const keyword = searchBar.value.trim().toLowerCase()
+searchBarInput.addEventListener('keyup', () => {
+    const keyword = searchBarInput.value.trim().toLowerCase()
     const filteredProducts = products.filter(product => 
         product.id.toLowerCase().includes(keyword) ||
         product.name.toLowerCase().includes(keyword)
     )
     showProducts(filteredProducts)
-}) 
+})
+
+removeCartBtn.addEventListener('click', event => {
+    cartEvents.remove()
+})
