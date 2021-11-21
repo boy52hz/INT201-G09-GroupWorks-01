@@ -1,4 +1,4 @@
-import { products } from './products.js';
+import { products } from './data/products.js';
 import { cartEvents } from './cartEvents.js';
 
 const btnToggleSearch = document.getElementById('toggleSearch');
@@ -90,12 +90,6 @@ const showProducts = products => {
 window.addEventListener('DOMContentLoaded', event => {
     updateArea()
     showProducts(products)
-    if(+localStorage.getItem('darkModeStatus') === 1){
-        box.checked = true
-    }else{
-        box.checked = false
-    }
-    updateTheme()
     cartEvents.update()                                         //*
     cartCount.textContent = cartEvents.getAmount()              //*
 })
@@ -124,43 +118,4 @@ searchBar.addEventListener('keyup', () => {
         product.name.toLowerCase().includes(keyword)
     )
     showProducts(filteredProducts)
-})
-
-// const themeSwitch = document.getElementById('box');
-// themeSwitch.addEventListener('change', () => {
-//     document.body.classList.toggle('bg-dark');
-// });
-
-const box = document.getElementById('box');
-box.addEventListener('click', () => {
-    if(+localStorage.getItem('darkModeStatus') === 1){          //*
-        localStorage.setItem('darkModeStatus', 0)               //*
-    }else{                                                      //*
-        localStorage.setItem('darkModeStatus', 1)               //*
-    }                                                           //*
-    updateTheme()                                               //*
-});
-
-function updateTheme(){
-    box.checked?document.body.classList.add("bg-dark"):document.body.classList.remove("bg-dark")        //*
-}
-
-// window.addEventListener('load', (event) => {
-//     let status = localStorage.getItem('darkModeStatus');
-//             status = JSON.parse(status);
-//   if (status === "false"){
-//     console.log("hello");
-//     document.body.classList.add("bg-dark"); 
-//     document.getElementById('box').checked = false;
-//   }
-// });
-
-
-
-
-
-
-
-
-
-
+}) 

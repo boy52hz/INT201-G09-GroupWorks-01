@@ -4,7 +4,7 @@ const logginbtn = document.getElementById('toggleLogin');
 const textusername = document.getElementById('usernametext');
 
 logginbtn.addEventListener('click', event => {
-    let person = prompt("Please enter your Username:");
+    const person = prompt("Please enter your Username:");  //*
     
     // when user cancel prompt
     if (person === null) return
