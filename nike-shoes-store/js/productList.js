@@ -8,12 +8,7 @@ let isOpen = !searchBar.getAttribute('data-isOpen')
 
 const removeCartBtn = document.getElementById('remove-cart')
 
-export const showProducts = products => {
-    const searchResult = document.getElementById('search-result')
-    searchResult.textContent = (
-        products.length > 0 ? `Found ${products.length} item(s).` : 'Not found.'
-    )
-    
+const showProducts = products => {    
     const productsElem = document.getElementById('products')
     productsElem.innerHTML = null
     
